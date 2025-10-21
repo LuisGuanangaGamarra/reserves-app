@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  width: 360px;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  height: 32px;
+}
+
+.item:disabled {
+  cursor: not-allowed;
+  background: #b00020;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.item_selected {
+  background: #4caf50;
+  color: #fff;
+  border: 1px solid #000;
+}

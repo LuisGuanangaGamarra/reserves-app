@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.button {
+  height: 60px;
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(18 18 20);
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  padding: 0 24px;
+}
+
+.button:hover {
+  background: rgba(18, 18, 20, 0.95);
+}
+
+.amount {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 1.2em;
+}
