@@ -54,7 +54,7 @@ datos que se muestran en el frontend.
 
 Antes de comenzar con las tareas requeridas, realiza el primer commit con tu nombre y apellido modificando este README.md
 
-Coloca aquí tu nombre y apellido: **[Nombre_Y_Apellido]**
+Coloca aquí tu nombre y apellido: Luis Virgilio Guananga Gamarra
 
 Esto nos permitirá identificar tu trabajo.
 
