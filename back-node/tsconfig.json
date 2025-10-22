@@ -7,8 +7,12 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "allowJs": true,
-    "strict": true
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "../build-back",
+    "rootDir": "./src",
+    "baseUrl": "./"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "test",  "../build-back"]
 }
