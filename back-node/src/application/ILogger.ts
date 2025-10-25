@@ -4,3 +4,5 @@ export interface ILogger {
     error(message: string, context?: unknown): void;
     debug(message: string, context?: unknown): void;
 }
+
+export const TokenLogger = Symbol.for("Logger");

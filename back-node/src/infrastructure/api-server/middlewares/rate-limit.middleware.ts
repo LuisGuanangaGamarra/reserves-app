@@ -6,7 +6,7 @@ export const globalRateLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     message: {
-        success: false,
+        code: 'RATE_LIMIT_EXCEEDED',
         message: "Demasiadas solicitudes desde esta IP. Intenta de nuevo más tarde.",
     },
 });
