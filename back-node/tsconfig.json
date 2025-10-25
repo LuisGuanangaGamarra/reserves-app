@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "lib": ["ES2022"],
     "moduleResolution": "node",
-    "target": "es2019",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -9,10 +11,10 @@
     "allowJs": true,
     "strict": true,
     "sourceMap": true,
-    "outDir": "../build-back",
+    "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "./"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "test",  "../build-back"]
+  "exclude": ["node_modules", "test",  "dist"]
 }

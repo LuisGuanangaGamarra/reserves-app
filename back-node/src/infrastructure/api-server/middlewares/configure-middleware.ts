@@ -5,7 +5,6 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import { globalRateLimiter } from "./rate-limit.middleware";
-import { ensureCsrfCookie, doubleCsrfProtection } from "./csrf.middleware";
 
 export const configureMiddleware = (app: Express) => {
     app.set(
@@ -30,8 +29,4 @@ export const configureMiddleware = (app: Express) => {
     app.use(cookieParser());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
-
-    app.use(ensureCsrfCookie);
-
-    app.use(doubleCsrfProtection);
 };

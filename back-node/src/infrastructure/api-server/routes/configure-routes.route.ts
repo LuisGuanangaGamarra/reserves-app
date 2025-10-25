@@ -5,11 +5,13 @@ import { createErrorMiddleware } from "../middlewares/error.middleware";
 
 import { ILogger, TokenLogger } from "../../../application/ILogger";
 import createReserveRoute from "./reserve.route";
+import csrfRoutes from "./csrf.routes";
 
 export const configureRoutes = (app: Express, container: Container) => {
     const logger:ILogger = container.get<ILogger>(TokenLogger);
 
-    app.use("/events", createEventRoute(container));
-    app.use("/reserves", createReserveRoute(container));
+    app.use("/api", csrfRoutes);
+    app.use("/api/events", createEventRoute(container));
+    app.use("/api/reserves", createReserveRoute(container));
     app.use(createErrorMiddleware(logger));
 }

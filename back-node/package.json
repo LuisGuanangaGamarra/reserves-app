@@ -3,12 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "node ./main.js",
+    "start": "node ./dist/main.js",
     "build": "tsc -p tsconfig.json",
     "dev": "node -r dotenv/config -r ts-node/register ./src/main.ts",
+    "typeorm": "node ./node_modules/typeorm/cli.js -d /app/dist/infrastructure/persistence/typeorm/data-source.js",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert",
     "typeorm:local": "node -r dotenv/config -r ts-node/register ./node_modules/typeorm/cli.js -d src/infrastructure/persistence/typeorm/data-source.ts",
     "migration:local:run": "npm run typeorm:local -- migration:run",
     "migration:local:revert": "npm run typeorm:local -- migration:revert"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   },
   "dependencies": {
     "@automapper/classes": "8.5.0",

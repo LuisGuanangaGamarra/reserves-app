@@ -13,10 +13,12 @@ import {ReserveResponseDto} from "../../../presentation/dto/reserve-response.dto
 import {GetEventByIdUseCase} from "../../../application/use-cases/get-event-by-id.use-case";
 import {CreateReserveSchema} from "../validators/reserve.schema";
 import {ReserveRequestDto} from "../../../presentation/dto/reserve-request.dto";
-import {SaveReserveUseCase} from "../../../application/use-cases/save-reserve.use-case";
+import { SaveReserveUseCase } from "../../../application/use-cases/save-reserve.use-case";
+import { doubleCsrfProtection } from "../middlewares/csrf.middleware";
 
 export default function createReserveRoute(container: Container): Router {
     const router = Router();
+    router.use(doubleCsrfProtection);
     const mapper:Mapper = container.get<Mapper>(TokenMapper);
 
     router.get('/:id',

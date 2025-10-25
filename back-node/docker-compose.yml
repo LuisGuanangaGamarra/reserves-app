@@ -1,15 +1,32 @@
 version: '3.8'
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./local/Dockerfile
+    container_name: back-node
+    restart: on-failure:1
+    env_file: .env
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+    networks:
+      - app_network
   db:
-    image: mysql:8.0
-    restart: always
+    image: mysql:lts-oraclelinux9
+    container_name: back-db
+    restart: on-failure:1
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
     ports:
       - '3306:3306'
+    networks:
+      - app_network
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+networks:
+  app_network:
+    driver: bridge

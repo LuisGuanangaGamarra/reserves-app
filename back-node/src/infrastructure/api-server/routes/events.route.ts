@@ -12,8 +12,11 @@ import { EventDetailResponseDto } from "../../../presentation/dto/event-detail-r
 import { validateSchema } from '../middlewares/validation.middleware';
 import { IdSchema } from '../validators/id.schema';
 
+import { doubleCsrfProtection } from "../middlewares/csrf.middleware";
+
 export default function createEventRoute(container: Container): Router {
     const router = Router();
+    router.use(doubleCsrfProtection);
     const mapper:Mapper = container.get<Mapper>(TokenMapper);
 
     router.get("/", async (req, res, next) => {
