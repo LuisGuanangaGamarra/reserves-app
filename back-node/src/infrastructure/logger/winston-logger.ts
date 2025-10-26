@@ -55,15 +55,15 @@ export class WinstonLogger implements ILogger {
     }
 
     info(message: string, context?: unknown): void {
-        this.loggerInstance.info(message, { context });
+        this.loggerInstance.info(message, context);
     }
     warn(message: string, context?: unknown): void {
-        this.loggerInstance.warn(message, { context });
+        this.loggerInstance.warn(message, context);
     }
     error(message: string, context?: unknown): void {
-        this.loggerInstance.error(message, { context });
+        this.loggerInstance.error(message, context);
     }
     debug(message: string, context?: unknown): void {
-        this.loggerInstance.debug(message, { context });
+        this.loggerInstance.debug(message, context);
     }
 }

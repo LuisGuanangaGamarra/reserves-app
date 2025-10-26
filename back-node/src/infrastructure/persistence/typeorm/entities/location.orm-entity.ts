@@ -1,17 +1,13 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-import { SeatOrmEntity } from "./seat.orm-entity";
+import { SeatOrmEntity } from './seat.orm-entity';
 
 @Entity('locations')
 export class LocationOrmEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({
-        type: 'varchar',
-        nullable: false,
-        length: 200,
-    })
+    @Column({ type: 'varchar', nullable: false, length: 200 })
     name!: string;
 
     @Column({ type: 'text', nullable: false })

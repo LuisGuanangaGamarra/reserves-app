@@ -11,6 +11,11 @@ import {
 import { LocationOrmEntity } from './location.orm-entity';
 import { ReserveOrmEntity } from './reserve.orm-entity';
 
+import {
+    getDateColumnType,
+    getDateDefault,
+} from '../utils/date-column.helper';
+
 @Entity('events')
 export class EventOrmEntity {
     @PrimaryGeneratedColumn()
@@ -19,7 +24,7 @@ export class EventOrmEntity {
     @Column({ type: 'varchar', length: 200, nullable: false })
     name!: string;
 
-    @Column({ type: 'timestamp', nullable: false })
+    @Column({ type: getDateColumnType(), nullable: false })
     date!: Date;
 
     @Column({ type: 'float', nullable: false })
@@ -34,9 +39,18 @@ export class EventOrmEntity {
     })
     reserves!: ReserveOrmEntity[];
 
-    @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: true })
+    @Column({
+        name: 'created_at',
+        type: getDateColumnType(),
+        default: () => getDateDefault(),
+        nullable: true,
+    })
     createdAt!: Date;
 
-    @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+    @DeleteDateColumn({
+        name: 'deleted_at',
+        type: getDateColumnType(),
+        nullable: true,
+    })
     deletedAt?: Date;
 }
