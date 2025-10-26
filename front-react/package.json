@@ -4,10 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
+    "dev": "vite --config vite.config.dev.ts",
+    "build": "tsc && vite build --config vite.config.ts",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview --config vite.config.dev.ts"
+  },
+  "engines": {
+    "node": ">=20.10.0"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.5",
