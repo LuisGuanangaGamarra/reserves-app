@@ -58,7 +58,17 @@ export const ReserveProfile: MappingProfile = (mapper: Mapper) => {
                     id: Number(eventEntity.id!),
                     name: eventEntity.name,
                     date: eventEntity.date.toISOString(),
+                    price: eventEntity.price,
+                    location: eventEntity.location?.address ?? '',
                 } as SeatReserveView
+            }),
+        ),
+        forMember(
+            (destination: ReserveResponseDto) => destination.totalPrice,
+            mapWithArguments((reserve, { event }) => {
+                const eventEntity = event as EventAggregate;
+                const reserveEntity = reserve as ReserveAggregate;
+                return eventEntity.price * reserveEntity.seatNumbers.length;
             }),
         ),
     )
