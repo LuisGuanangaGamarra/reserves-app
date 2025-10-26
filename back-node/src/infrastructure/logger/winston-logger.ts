@@ -22,6 +22,9 @@ const logFormat = winston.format.printf(({ level, message, timestamp, context })
 const transports: winston.transport[] = [
     new winston.transports.Console({
         level: isProduction ? 'info' : 'debug',
+        format: winston.format.combine(
+            winston.format.colorize({ all: true }),
+        ),
     }),
 ];
 
@@ -33,7 +36,7 @@ if (isProduction) {
             datePattern: 'YYYY-MM-DD',
             zippedArchive: true,
             maxFiles: '14d',
-            level: 'info',
+            level: 'error',
         })
     );
 }
