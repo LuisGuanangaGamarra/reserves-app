@@ -24,8 +24,7 @@ export const SeatListItem = (props: {
       className={cls.join(" ")}
       disabled={props.isReserved}
       onClick={() => {
-        // TODO: Pasar correctamente el numero de asiento seleccionado
-        props.onClick?.(-1);
+          props.onClick?.(props.number);
       }}
     >
       {props.number}

@@ -1,27 +1,22 @@
-import { Event } from "./types";
+import { EventDetail, ReserveDetailResponseDto } from "./types";
+import { http } from '../../api/axios.client.ts';
 
 export const service = {
-  async getEventById(id: string): Promise<Event> {
-    /**
-     * TODO: Reemplazar por llamada a backend
-     */
-    return {
-      id: id,
-      name: `Event ${id}`,
-      date: new Date().toISOString(),
-      price: 100,
-      reservedSeats: [2, 3, 12, 13, 22, 23, 26, 27],
-    };
+  async getEventById(id: number): Promise<EventDetail> {
+      return (await http.get<EventDetail>(`/events/${id}`)).data;
   },
 
   async book(props: {
-    eventId: string;
+    eventId: number;
     selectedSeats: number[];
-  }): Promise<{ reserveId: string }> {
-    /**
-     * TODO: Reemplazar por llamada a backend
-     */
-    console.log("book", props);
-    return { reserveId: "f9zL5w" };
+  }): Promise<ReserveDetailResponseDto> {
+      const { data } = await http.post<ReserveDetailResponseDto>(
+          `/reserves`,
+          {
+              eventId: props.eventId,
+              seatNumbers: props.selectedSeats,
+          },
+      );
+      return data;
   },
 };

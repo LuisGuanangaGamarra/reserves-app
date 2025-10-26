@@ -15,7 +15,7 @@ export const {
     },
     cookieName: cookieName,
     cookieOptions: {
-        httpOnly: false,
+        httpOnly: true,
         sameSite: isProduction ? "none" : "lax",
         secure: enableHttps,
         path: "/",

@@ -1,17 +1,8 @@
-import { Reserve } from "./types";
+import { ReserveDetailResponseDto } from "./types";
+import { http } from '../../api/axios.client.ts';
 
 export const service = {
-  async getReserveById(id: string): Promise<Reserve> {
-    /**
-     * TODO: Reemplazar por llamada a backend
-     */
-    return {
-      id: id,
-      seats: [11, 12, 13],
-      event: {
-        name: "Event 1",
-        date: new Date().toISOString(),
-      },
-    };
+  async getReserveById(id: number): Promise<ReserveDetailResponseDto> {
+      return (await http.get<ReserveDetailResponseDto>(`/reserves/${id}`)).data;
   },
 };

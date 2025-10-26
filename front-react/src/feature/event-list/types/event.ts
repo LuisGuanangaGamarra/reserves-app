@@ -1,5 +1,8 @@
 export interface Event {
-  id: string;
-  name: string;
-  date: string;
+    id: number;
+    name: string;
+    date: string;
+    price: number;
+    location: string;
+    hasAvailableSeats: boolean;
 }

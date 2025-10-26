@@ -3,53 +3,85 @@ import { Layout } from "../../components/layout";
 import { BookButton, SeatList, SeatListItem, Screen } from "./components";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Event } from "./types";
+
 import { service } from "./service";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { formatToLocalTime } from "../../utils/date-format.util.ts";
+import { useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "../../components/spinner";
 
 export const EventBook = () => {
-  const maxSeats = 32;
   const navigate = useNavigate();
   const { eventId } = useParams<"eventId">();
-  const [event, setEvent] = useState<Event | null>(null);
+  const queryClient = useQueryClient();
+  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
+
+
+  const { data: event, isLoading, error } = useQuery({
+      queryKey: ["event", eventId],
+      queryFn: () => service.getEventById(Number(eventId)),
+      enabled: !!eventId,
+  });
 
   useEffect(() => {
-    if (!eventId) {
-      return;
-    }
-
-    service.getEventById(eventId).then((event) => {
-      setEvent(event);
-    });
+      setSelectedSeats([]);
   }, [eventId]);
 
-  const submit = () => {
-    if (!eventId) {
-      return;
-    }
+  const { mutateAsync: doBook, isPending } = useMutation({
+      mutationFn: (payload: { eventId: number; selectedSeats: number[] }) =>
+          service.book(payload),
+      onSuccess: async ({ id }) => {
+          await queryClient.invalidateQueries({ queryKey: ["events"] });
+          await queryClient.invalidateQueries({ queryKey: ["event", eventId] });
+          navigate(`/reserve/${id}`);
+      },
+  });
 
-    service
-      .book({
-        eventId: eventId,
-        selectedSeats: [], // TODO: Enviar asientos seleccionados a reservar
-      })
-      .then(({ reserveId }) => {
-        navigate(`/reserve/${reserveId}`);
-      });
+  const toggleSeat = (n: number) => {
+      if (!event)
+          return;
+
+      const isReserved = event.seats?.some((seat) => seat.seatNumber === n && seat.status === "reserved");
+
+      if(isReserved)
+          return;
+
+      const exists = selectedSeats.includes(n);
+      if (exists) {
+          setSelectedSeats((prev) => prev.filter((x) => x !== n));
+      } else {
+          if (selectedSeats.length >= 4)
+              return;
+
+          setSelectedSeats((prev) => [...prev, n]);
+      }
+  };
+
+  const submit = () => {
+      if (!event) return;
+      if (selectedSeats.length === 0) return;
+      doBook({ eventId: Number(eventId), selectedSeats });
   };
 
   const computeAmount = () => {
-    /**
-     * TODO: Calcular el monto total de los asientos seleccionados
-     */
-    return 0;
+      return (event?.price ?? 0) * selectedSeats.length;
   };
 
-  if (!event) {
-    /**
-     * TODO: Mostrar un spinner mientras se carga el evento
-     */
-    return null;
+  if ((isLoading || !event) && !error) {
+      return (
+          <Layout>
+              <Spinner />
+          </Layout>
+      );
   }
+
+    if (error) {
+        return (
+            <Layout>
+                <p>Error al cargar el evento</p>
+            </Layout>
+        );
+    }
 
   return (
     <Layout>
@@ -59,42 +91,27 @@ export const EventBook = () => {
 
       <h1 className={style.title}>{event.name}</h1>
       <p className={style.date}>
-        {
-          /**
-           * TODO: Mostrar la fecha en formato "DD/MM/YYYY HH:mm"
-           * Para esto se puede usar cualquier libreria de manejo de fechas
-           */
-          event.date
-        }
+        { formatToLocalTime(event.date) }
       </p>
 
       <Screen />
       <SeatList>
-        {Array.from({ length: maxSeats }, (_, idx) => idx + 1).map((number) => {
-          /**
-           * TODO: Agregar logica para marcar y desmarcar los asientos a reservar
-           * Para esto se debe agregar o quitar la propiedad isSelected al componente SeatListItem
-           * creando un estado que guarde los asientos seleccionados usando el evento onClick
-           * del componente SeatListItem
-           */
-
-          /**
-           * TODO: Agregar regla comercial de que solo se pueden
-           * seleccionar máximo 4 asientos por reserva
-           */
-
-          const isReserved = event.reservedSeats.indexOf(number) !== -1;
+        {event.seats?.map((seat) => {
+          const isSelected = selectedSeats.includes(seat.seatNumber);
+          const isReserved = seat.status === "reserved";
 
           return (
             <SeatListItem
-              key={number}
-              number={number}
-              isReserved={isReserved}
+                key={seat.seatNumber}
+                number={seat.seatNumber}
+                isReserved={isReserved}
+                isSelected={isSelected}
+                onClick={toggleSeat}
             />
           );
         })}
       </SeatList>
-      <BookButton amount={computeAmount().toString()} onClick={submit} />
+      <BookButton amount={computeAmount().toString()} onClick={isPending ? undefined : submit} />
     </Layout>
   );
 };

@@ -2,27 +2,38 @@ import { Link, useParams } from "react-router-dom";
 import style from "./reserve-detail.module.css";
 import { Layout } from "../../components/layout";
 import { BookQR } from "./components";
-import { useEffect, useState } from "react";
-import { Reserve } from "./types";
+
+import { useQuery } from "@tanstack/react-query";
 import { service } from "./service";
+import { formatToLocalTime } from "../../utils/date-format.util.ts";
+import { Spinner } from "../../components/spinner";
 
 export const ReserveDetail = () => {
   const { bookingId } = useParams<"bookingId">();
-  const [reserve, setReserve] = useState<Reserve | null>(null);
 
-  useEffect(() => {
-    if (!bookingId) {
-      return;
-    }
+  const { data: reserve, isLoading, error } = useQuery({
+      queryKey: ["reserve", bookingId],
+      queryFn: () => service.getReserveById(Number(bookingId)),
+      enabled: !!bookingId,
+      staleTime: 0,
+      gcTime: 0,
+      refetchOnWindowFocus: false,
+  });
 
-    service.getReserveById(bookingId).then((reserve) => setReserve(reserve));
-  }, [bookingId]);
+  if ((isLoading || !reserve) && !error) {
+      return (
+          <Layout>
+              <Spinner />
+          </Layout>
+      );
+  }
 
-  if (!reserve) {
-    /**
-     * TODO: Mostrar un spinner mientras se carga el la reserva
-     */
-    return null;
+  if (error) {
+      return (
+          <Layout>
+              <p>Error al cargar la reserva</p>
+          </Layout>
+      )
   }
 
   return (
@@ -35,7 +46,7 @@ export const ReserveDetail = () => {
         <h1 className={style.title}>¡Reserva exitosa!</h1>
 
         <h2 className={style.eventName}>{reserve.event.name}</h2>
-        <p className={style.eventDate}>{reserve.event.date}</p>
+        <p className={style.eventDate}>{formatToLocalTime(reserve.event.date)}</p>
 
         <h3 className={style.reserveTitle}>Reserva</h3>
         <p className={style.reserveId}>{reserve.id}</p>
@@ -43,7 +54,7 @@ export const ReserveDetail = () => {
         <h3 className={style.seatsTitle}>Asientos</h3>
         <p className={style.seatsNumbers}>{reserve.seats.join(",")}</p>
 
-        <BookQR />
+        <BookQR bookingId={(bookingId ? String(bookingId) : '')} />
       </div>
     </Layout>
   );
