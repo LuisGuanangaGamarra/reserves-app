@@ -15,6 +15,7 @@ import {CreateReserveSchema} from "../validators/reserve.schema";
 import {ReserveRequestDto} from "../../../presentation/dto/reserve-request.dto";
 import { SaveReserveUseCase } from "../../../application/use-cases/save-reserve.use-case";
 import { doubleCsrfProtection } from "../middlewares/csrf.middleware";
+import { GetReservesByEventIdUseCase } from "../../../application/use-cases/get-reserves-by-event-id.use";
 
 export default function createReserveRoute(container: Container): Router {
     const router = Router();
@@ -68,6 +69,26 @@ export default function createReserveRoute(container: Container): Router {
                 next(error);
             }
         },
+    )
+
+    router.get('/get-by-event-id/:id',
+        checkSchema(IdSchema),
+        validateSchema,
+        async (req: Request, res: Response, next: NextFunction) => {
+            const { id } = req.params;
+            const getReservesByEventIdUC = container.get<GetReservesByEventIdUseCase>(GetReservesByEventIdUseCase);
+            const getEventByIdUC = container.get<GetEventByIdUseCase>(GetEventByIdUseCase);
+            try {
+                const event = await  getEventByIdUC.execute(Number(id));
+                const reservesAgregate = await getReservesByEventIdUC.execute(Number(id));
+                const response = mapper.mapArray(reservesAgregate, ReserveAggregate, ReserveResponseDto, {
+                    extraArgs: () => ({ event })
+                });
+                res.status(200).json(response);
+            } catch (error) {
+                next(error);
+            }
+        }
     )
 
     return router;

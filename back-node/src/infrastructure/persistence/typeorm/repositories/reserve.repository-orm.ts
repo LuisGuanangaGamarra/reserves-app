@@ -34,6 +34,9 @@ export class ReserveRepositoryOrm implements IReserveRepository {
         const reserves = await this.repo.find({
             where: { eventId },
             relations: ["event", "event.location"],
+            order: {
+                createdAt: "ASC",
+            },
         });
 
         return this.mapper.mapArray(reserves, ReserveOrmEntity, ReserveAggregate);
@@ -41,7 +44,7 @@ export class ReserveRepositoryOrm implements IReserveRepository {
 
     async save(reserve: ReserveAggregate): Promise<ReserveAggregate> {
         const entity = this.mapper.map(reserve, ReserveAggregate, ReserveOrmEntity);
-        const orm = this.repo.create(entity);
+        const { createdAt, deletedAt, ...orm } = this.repo.create(entity);
         const ormEntity = await this.repo.save(orm);
         return this.mapper.map(ormEntity, ReserveOrmEntity, ReserveAggregate)
     }

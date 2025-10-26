@@ -21,6 +21,7 @@ export const configureMiddleware = (app: Express) => {
 
     app.use(helmet({
         contentSecurityPolicy: false,
+        crossOriginOpenerPolicy: false,
         crossOriginResourcePolicy: { policy: "cross-origin" },
     }));
 

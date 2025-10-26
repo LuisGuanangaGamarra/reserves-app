@@ -8,6 +8,7 @@ import { mapper } from '../mapper/core/automapper.config';
 import { ReserveProfile } from "../mapper/reserve/reserve.profile";
 import { GetReserveByIdUseCase } from "../../application/use-cases/get-reserve-by-id.use-case";
 import { SaveReserveUseCase } from "../../application/use-cases/save-reserve.use-case";
+import { GetReservesByEventIdUseCase } from "../../application/use-cases/get-reserves-by-event-id.use";
 
 
 export const ReserveModule = new ContainerModule((options: ContainerModuleLoadOptions) => {
@@ -21,6 +22,10 @@ export const ReserveModule = new ContainerModule((options: ContainerModuleLoadOp
 
     options.bind<SaveReserveUseCase>(SaveReserveUseCase)
         .to(SaveReserveUseCase)
+        .inTransientScope()
+
+    options.bind<GetReservesByEventIdUseCase>(GetReservesByEventIdUseCase)
+        .to(GetReservesByEventIdUseCase)
         .inTransientScope()
 
     addProfile(mapper, ReserveProfile);

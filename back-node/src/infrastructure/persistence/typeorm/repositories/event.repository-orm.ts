@@ -22,6 +22,9 @@ export class EventRepositoryOrm implements IEventRepository {
     async findAll(): Promise<EventAggregate[]> {
         const events = await this.repo.find({
             relations: ["location", "location.seats", "reserves"],
+            order: {
+                date: "ASC",
+            },
         });
 
         return mapper.mapArray(events, EventOrmEntity, EventAggregate);
