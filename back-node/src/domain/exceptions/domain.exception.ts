@@ -5,6 +5,7 @@ export class DomainException<
         public readonly code: string,
         public readonly message: string,
         public readonly context?: TContext,
+        public readonly statusCode?: number,
     ) {
         super(message);
     }

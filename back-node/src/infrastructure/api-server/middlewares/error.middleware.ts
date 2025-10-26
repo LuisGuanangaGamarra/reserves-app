@@ -17,7 +17,7 @@ export function createErrorMiddleware(logger: ILogger) {
                 path: req.path,
             });
 
-            return res.status(400).json(err);
+            return res.status(err.statusCode ?? 400).json(err);
         }
 
         if (err === invalidCsrfTokenError) {

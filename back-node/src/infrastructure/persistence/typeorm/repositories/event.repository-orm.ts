@@ -31,10 +31,17 @@ export class EventRepositoryOrm implements IEventRepository {
     }
 
     async findById(id: number): Promise<EventAggregate | null> {
-        const event = await this.repo.findOne({
-            where: { id },
-            relations: ["location", "location.seats", "reserves"],
-        });
+        const event = await this.repo
+            .createQueryBuilder("event")
+            .leftJoinAndSelect("event.location", "location")
+            .leftJoinAndSelect("location.seats", "seats")
+            .leftJoinAndSelect("event.reserves", "reserves")
+            .where("event.id = :id", { id })
+            .orderBy({
+                "seats.seatNumber": "ASC",
+                "reserves.seatNumbers": "ASC",
+            })
+            .getOne();
 
         if (!event) return null;
 

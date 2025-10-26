@@ -22,17 +22,39 @@ export class SaveReserveUseCase {
         const eventId = reserveData.eventId
         const event = await this.eventRepository.findById(eventId);
         if (!event) {
-            throw new DomainException('event_not_found', 'Event not found', { eventId });
+            throw new DomainException('event_not_found', 'Event not found', { eventId }, 404);
         }
 
-        const reserved = new Set(
+        const validSeatNumbers = new Set(
+            event.location.seats.map(seat => Number(seat.seatNumber))
+        );
+
+        const invalidSeats = reserveData.seatNumbers.filter(
+            seatNumber => !validSeatNumbers.has(seatNumber)
+        );
+
+        if (invalidSeats.length > 0) {
+            throw new DomainException(
+                'invalid_seat_number',
+                'Los asientos a reservar no existen en para ese evento',
+                { invalidSeats }
+            );
+        }
+
+        const reservedSeats = new Set(
             event.reserves.flatMap(r => r.seatNumbers.map(Number))
         );
 
-        const isReservedSeat = reserveData.seatNumbers.some(seatNumber => reserved.has(seatNumber));
+        const alreadyReserved = reserveData.seatNumbers.filter(
+            seatNumber => reservedSeats.has(seatNumber)
+        );
 
-        if (isReservedSeat) {
-            throw new DomainException('seat_reserved', 'Seat is reserved', { seatNumbers: reserveData.seatNumbers });
+        if (alreadyReserved.length > 0) {
+            throw new DomainException(
+                'seat_already_reserved',
+                'Alguno o algunos asientos ya fueron reservados',
+                { alreadyReserved }
+            );
         }
 
         return await this.reserveRepository.save(reserveData);

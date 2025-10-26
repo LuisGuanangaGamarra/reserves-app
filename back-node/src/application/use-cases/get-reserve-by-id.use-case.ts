@@ -13,7 +13,7 @@ export class GetReserveByIdUseCase {
     async execute(id: number) {
         const reserve = await this.reserveRepository.findById(id);
         if (!reserve) {
-            throw new DomainException('reserve_not_found', 'Reserve not found', { id });
+            throw new DomainException('reserve_not_found', 'Reserve not found', { id }, 404);
         }
 
         return reserve;
