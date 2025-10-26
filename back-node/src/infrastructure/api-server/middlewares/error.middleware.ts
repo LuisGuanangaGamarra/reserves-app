@@ -12,7 +12,7 @@ export function createErrorMiddleware(logger: ILogger) {
         next: NextFunction
     ) {
         if (err instanceof DomainException) {
-            logger.warn(`DomainException [${err.code}]: ${err.message}`, {
+            logger.debug(`DomainException [${err.code}]: ${err.message}`, {
                 context: err.context,
                 path: req.path,
             });
@@ -21,7 +21,7 @@ export function createErrorMiddleware(logger: ILogger) {
         }
 
         if (err === invalidCsrfTokenError) {
-            logger.warn("CSRF token inválido o ausente", { path: req.path });
+            logger.debug("CSRF token inválido o ausente", { path: req.path });
 
             return res.status(403).json({
                 code: "CSRF_TOKEN_INVALID",
