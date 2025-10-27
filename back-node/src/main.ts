@@ -11,7 +11,7 @@ import { DataSource } from "typeorm";
 import { TokenDataSource } from "./infrastructure/persistence/typeorm/data-source";
 
 dotenv.config({
-    path: ["/etc/secrets/.env", "./.env"],
+    path: ["etc/secrets/.env", "./.env"],
 });
 
 const PORT = process.env.PORT || 3000;
