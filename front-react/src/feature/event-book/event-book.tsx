@@ -2,20 +2,18 @@ import style from "./event-book.module.css";
 import { Layout } from "../../components/layout";
 import { BookButton, SeatList, SeatListItem, Screen } from "./components";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 import { service } from "./service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formatToLocalTime } from "../../utils/date-format.util.ts";
 import { useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "../../components/spinner";
+import { useSeatSelection } from "./hooks/use-seat-selection.hook";
 
 export const EventBook = () => {
   const navigate = useNavigate();
   const { eventId } = useParams<"eventId">();
   const queryClient = useQueryClient();
-  const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
-
 
   const { data: event, isLoading, error } = useQuery({
       queryKey: ["event", eventId],
@@ -23,9 +21,7 @@ export const EventBook = () => {
       enabled: !!eventId,
   });
 
-  useEffect(() => {
-      setSelectedSeats([]);
-  }, [eventId]);
+  const { selectedSeats, toggleSeat } = useSeatSelection({ event, maxSeats: 4 });
 
   const { mutateAsync: doBook, isPending } = useMutation({
       mutationFn: (payload: { eventId: number; selectedSeats: number[] }) =>
@@ -37,25 +33,6 @@ export const EventBook = () => {
       },
   });
 
-  const toggleSeat = (n: number) => {
-      if (!event)
-          return;
-
-      const isReserved = event.seats?.some((seat) => seat.seatNumber === n && seat.status === "reserved");
-
-      if(isReserved)
-          return;
-
-      const exists = selectedSeats.includes(n);
-      if (exists) {
-          setSelectedSeats((prev) => prev.filter((x) => x !== n));
-      } else {
-          if (selectedSeats.length >= 4)
-              return;
-
-          setSelectedSeats((prev) => [...prev, n]);
-      }
-  };
 
   const submit = () => {
       if (!event) return;

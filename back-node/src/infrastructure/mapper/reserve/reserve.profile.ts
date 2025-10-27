@@ -85,7 +85,7 @@ export const ReserveProfile: MappingProfile = (mapper: Mapper) => {
         mapper,
         ReserveRequestDto,
         ReserveAggregate,
-        ...mapProps(['eventId', 'seatNumbers']),
+        ...mapProps(['eventId']),
         forMember(
             (destination: ReserveAggregate) => destination.id,
             mapFrom(() => null)
@@ -94,5 +94,12 @@ export const ReserveProfile: MappingProfile = (mapper: Mapper) => {
             (destination: ReserveAggregate) => destination.createdAt,
             mapFrom(() => null)
         ),
+        forMember(
+            (destination: ReserveAggregate) => destination.seatNumbers,
+            mapFrom((source: ReserveRequestDto) =>
+                (source.seatNumbers ?? [])
+                    .sort((a, b) => a - b)
+            )
+        )
     )
 };
