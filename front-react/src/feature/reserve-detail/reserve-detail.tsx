@@ -16,7 +16,7 @@ export const ReserveDetail = () => {
       queryFn: () => service.getReserveById(Number(bookingId)),
       enabled: !!bookingId,
       staleTime: 0,
-      gcTime: 0,
+      gcTime: 1,
       refetchOnWindowFocus: false,
   });
 

@@ -11,7 +11,7 @@ export const Spinner: React.FC<SpinnerProps> = ({ size = "md", className, style 
     const cls = [styles.spinner, styles[size]].filter(Boolean).join(" ");
     return (
         <div className={styles.container}>
-            <div className={className ? `${cls} ${className}` : cls} style={style} />
+            <div role="status" aria-live="polite" aria-busy="true" className={className ? `${cls} ${className}` : cls} style={style} />
         </div>
     );
 };
