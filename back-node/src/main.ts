@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { Container } from "inversify";
 import http from "http";
+import fs from 'fs';
 
 import { bootstrapContainer } from "./infrastructure/di/container";
 import { configureMiddleware } from "./infrastructure/api-server/middlewares/configure-middleware";
@@ -10,10 +11,11 @@ import { ILogger, TokenLogger } from "./application/ILogger";
 import { DataSource } from "typeorm";
 import { TokenDataSource } from "./infrastructure/persistence/typeorm/data-source";
 
-dotenv.config({
-    path: ["/etc/secrets/.env", "./.env"],
-    quiet: true,
-});
+if (fs.existsSync('/etc/secrets/.env')) {
+    dotenv.config({ path: '/etc/secrets/.env', quiet: true });
+} else {
+    dotenv.config({ path: './.env', quiet: true });
+}
 
 const PORT = process.env.PORT || 3000;
 const app = express();
