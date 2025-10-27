@@ -46,19 +46,20 @@ src/
 
 ## ⚙️ Variables de Entorno (.env)
 
-| Variable                 | Descripción                                                   | Ejemplo |
-|--------------------------|---------------------------------------------------------------|----------|
-| `NODE_ENV`               | Entorno de ejecución (`development` / `production`)           | `development` |
-| `PORT`                   | Puerto del servidor                                           | `3001` |
-| `DB_TYPE`                | Tipo de base de datos (`mysql` o `sqlite`)                    | `mysql` |
-| `DB_HOST`                | Host de la base de datos                                      | `localhost` |
-| `DB_PORT`                | Puerto del servidor de base de datos                          | `3306` |
-| `DB_USER`                | Usuario de la base de datos                                   | `root` |
-| `DB_PASSWORD`            | Contraseña del usuario de la base de datos                    | `ZrfsMjfBL8j58KjvZDFQKCPL` |
-| `DB_NAME`                | Nombre de la base de datos                                    | `events_db` |
-| `FRONTEND_ORIGIN`        | Dominio permitido por CORS                                    | `http://localhost:5173` |
-| `CSRF_SECRET`            | Clave secreta para el doble envío CSRF                       | `my-secret-token` |
-| `ENABLE_HTTPS`           | Indica si HTTPS está habilitado (`true` / `false`)            | `false` |
+| Variable          | Descripción                                                   | Ejemplo |
+|-------------------|---------------------------------------------------------------|----------|
+| `NODE_ENV`        | Entorno de ejecución (`development` / `production`)           | `development` |
+| `PORT`            | Puerto del servidor                                           | `3001` |
+| `DB_TYPE`         | Tipo de base de datos (`mysql` o `sqlite`)                    | `mysql` |
+| `DB_HOST`         | Host de la base de datos                                      | `localhost` |
+| `DB_PORT`         | Puerto del servidor de base de datos                          | `3306` |
+| `DB_USER`         | Usuario de la base de datos                                   | `root` |
+| `DB_PASSWORD`     | Contraseña del usuario de la base de datos                    | `ZrfsMjfBL8j58KjvZDFQKCPL` |
+| `DB_NAME`         | Nombre de la base de datos                                    | `events_db` |
+| `DB_SSL`          | Indica si HTTPS está habilitado para la db (`true` / `false`) | `false` |
+| `FRONTEND_ORIGIN` | Dominio permitido por CORS                                    | `http://localhost:5173` |
+| `CSRF_SECRET`     | Clave secreta para el doble envío CSRF                        | `my-secret-token` |
+| `ENABLE_HTTPS`    | Indica si HTTPS está habilitado (`true` / `false`)            | `false` |
 
 ---
 
