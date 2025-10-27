@@ -11,7 +11,12 @@
     "migration:revert": "npm run typeorm migration:revert",
     "typeorm:local": "node -r dotenv/config -r ts-node/register ./node_modules/typeorm/cli.js -d src/infrastructure/persistence/typeorm/data-source.ts",
     "migration:local:run": "npm run typeorm:local -- migration:run",
-    "migration:local:revert": "npm run typeorm:local -- migration:revert"
+    "migration:local:revert": "npm run typeorm:local -- migration:revert",
+    "test:coverage": "jest --coverage --passWithNoTests",
+    "test": "jest --passWithNoTests",
+    "test:unit": "jest --runTestsByPath ./test/unit",
+    "test:integration": "jest --runTestsByPath ./test/integration",
+    "test:e2e": "jest --runTestsByPath ./test/e2e --detectOpenHandles"
   },
   "engines": {
     "node": ">=20.10.0"
@@ -39,10 +44,15 @@
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
     "@types/express": "^4.17.17",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.2.3",
+    "@types/supertest": "^6.0.3",
     "@types/uuid": "^9.0.1",
     "better-sqlite3": "^12.4.1",
+    "jest": "^30.2.0",
     "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "ts-jest": "^29.4.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2"
   }

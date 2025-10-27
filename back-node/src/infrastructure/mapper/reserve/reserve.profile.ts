@@ -20,10 +20,18 @@ export const ReserveProfile: MappingProfile = (mapper: Mapper) => {
         mapper,
         ReserveOrmEntity,
         ReserveAggregate,
-        ...mapProps(['eventId', 'seatNumbers', 'createdAt']),
+        ...mapProps(['eventId', 'createdAt']),
         forMember(
             (destination: ReserveAggregate) => destination.id,
             mapFrom((source: ReserveOrmEntity) => source.id)
+        ),
+        forMember(
+            (destination: ReserveAggregate) => destination.seatNumbers,
+            mapFrom((source: ReserveOrmEntity) =>
+                Array.isArray(source.seatNumbers)
+                    ? source.seatNumbers.map((n: any) => Number(n))
+                    : []
+            )
         ),
     )
 
