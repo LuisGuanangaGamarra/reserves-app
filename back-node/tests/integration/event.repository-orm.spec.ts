@@ -4,6 +4,7 @@ import { DataSource } from "typeorm";
 import { TokenDataSource } from "../../src/infrastructure/persistence/typeorm/data-source";
 import { bootstrapContainer } from "../../src/infrastructure/di/container";
 import { IEventRepository, TokenEventRepository } from "../../src/domain/repositories/event.repository";
+import { SeatEntity } from "../../src/domain/entities/seat.entity";
 
 describe("EventRepositoryOrm", () => {
     let container: Container;
@@ -24,6 +25,7 @@ describe("EventRepositoryOrm", () => {
         const items = await repo.findAll();
         expect(items.length).toBeGreaterThan(0);
         expect(items[0]).toHaveProperty("location");
+        expect(items[0].location?.seats?.every((n: SeatEntity) => typeof (n.seatNumber) === "number")).toBe(true)
     });
 
     it("findById debería retornar un evento por id existente y null si no existe", async () => {
