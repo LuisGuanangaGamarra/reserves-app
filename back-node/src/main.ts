@@ -12,9 +12,9 @@ import { DataSource } from "typeorm";
 import { TokenDataSource } from "./infrastructure/persistence/typeorm/data-source";
 
 if (fs.existsSync('/etc/secrets/.env')) {
-    dotenv.config({ path: '/etc/secrets/.env', quiet: true });
-} else {
-    dotenv.config({ path: './.env', quiet: true });
+    dotenv.config({ path: '/etc/secrets/.env', quiet: true, override: true });
+} else if (fs.existsSync('./.env')) {
+    dotenv.config({ path: './.env', quiet: true, override: true });
 }
 
 const PORT = process.env.PORT || 3000;
