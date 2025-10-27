@@ -12,20 +12,22 @@ export const configureMiddleware = (app: Express) => {
         process.env.NODE_ENV === 'production' ? 1 : false,
     );
 
+    app.use(globalRateLimiter);
+
+    app.use(helmet({
+        contentSecurityPolicy: false,
+        crossOriginEmbedderPolicy: false,
+        crossOriginOpenerPolicy: false,
+        crossOriginResourcePolicy: { policy: "cross-origin" },
+    }));
+
     app.use(cors({
         origin: process.env.FRONTEND_ORIGIN,
         credentials: true,
         methods: ["GET", "POST", "PUT", "DELETE"],
         allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
+        optionsSuccessStatus: 204,
     }));
-
-    app.use(helmet({
-        contentSecurityPolicy: false,
-        crossOriginOpenerPolicy: false,
-        crossOriginResourcePolicy: { policy: "cross-origin" },
-    }));
-
-    app.use(globalRateLimiter);
 
     app.use(cookieParser());
     app.use(express.json());

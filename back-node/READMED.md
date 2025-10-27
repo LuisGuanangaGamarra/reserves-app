@@ -204,9 +204,13 @@ npm run typeorm migration:revert
 
 ## 🌍 Demo en Producción
 
-> **URL del demo:** _(Pendiente de agregar)_
+> **URL del demo:** [DEMO](https://reserves-app-back.onrender.com/api/events)
 ---
 
+## Coleccion de Postman
+Se incluye la coleccion de postman en la carpeta root del proyecto.
+
+---
 ## 🧾 Licencia
 
 Este proyecto está licenciado bajo la licencia MIT.  

@@ -1,0 +1,196 @@
+{
+	"info": {
+		"_postman_id": "bb441314-3989-4566-b710-877badabc3d7",
+		"name": "Continium",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5839330"
+	},
+	"item": [
+		{
+			"name": "list events",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-C",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3001/api/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "save reserve",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRF-Token",
+						"value": "{{csrfToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"eventId\": 3,\r\n    \"seatNumbers\": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32] \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/api/reserves",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"reserves"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get event by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/events/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"events",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get csrf token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Leer respuesta JSON\r",
+							"const res = pm.response.json();\r",
+							"\r",
+							"// Guardar token en variable de entorno\r",
+							"pm.environment.set(\"csrfToken\", res.token);\r",
+							"\r",
+							"// Crear cookie manualmente en localhost\r",
+							"pm.cookies.jar().set(\"http://localhost:3001\", \"__Host-csrf-token\", res.token, function (error) {\r",
+							"    if (error) {\r",
+							"        console.error(\"Error al crear cookie CSRF:\", error);\r",
+							"    } else {\r",
+							"        console.log(\"✅ Cookie csrf-token creada correctamente en localhost:3001\");\r",
+							"    }\r",
+							"});\r",
+							"\r",
+							"console.log(\"CSRF token guardado:\", res.token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/csrf-token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"csrf-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get reserves by event id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/reserves/get-by-event-id/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"reserves",
+						"get-by-event-id",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get reserve by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3001/api/reserves/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"reserves",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
