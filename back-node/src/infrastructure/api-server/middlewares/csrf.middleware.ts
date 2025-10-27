@@ -9,7 +9,7 @@ export const {
     generateCsrfToken,
     doubleCsrfProtection,
 } = doubleCsrf({
-    getSecret: () => process.env.CSRF_SECRET || '',
+    getSecret: () => process.env.CSRF_SECRET!,
     getSessionIdentifier: (req) => {
         return req.ip ?? 'anonymous';
     },
