@@ -62,3 +62,7 @@ Esto nos permitirá identificar tu trabajo.
 Recuerda que la implementación de headers de seguridad y CORS son requisitos adicionales que se te solicitan para evaluar tus habilidades más allá de los comentarios "TODO".
 
 ¡Buena suerte con la prueba técnica! Esperamos ver tus soluciones.
+
+
+## Nota del Desarrollador
+Leer los readmes de cada carpeta para poder ejecutar el proyecto.
