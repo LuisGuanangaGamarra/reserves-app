@@ -22,7 +22,6 @@ let server: http.Server | null = null;
 
 async function bootstrap() {
     try {
-        console.log('env', process.env);
         container = await bootstrapContainer();
         configureMiddleware(app);
         configureRoutes(app, container);
